@@ -1,0 +1,12 @@
+{
+    "[arduino][cpp]": {
+        // goofy ahh auto formatter yuck disgusting ew
+        "editor.formatOnSave": false,
+    },
+    "files.associations": {
+        "*.dmuploadcookie": "xml",
+        "motd": "plaintext",
+        "*.h.template": "cpp",
+        "*.template": "cpp"
+    }
+}

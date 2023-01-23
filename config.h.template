@@ -1,0 +1,45 @@
+#pragma once
+#include "types.h"
+
+//     ____             __ _
+//    / ___|___  _ __  / _(_) __ _ _ 
+//   | |   / _ \| '_ \| |_| |/ _` (_)
+//   | |__| (_) | | | |  _| | (_| |_ 
+//    \____\___/|_| |_|_| |_|\__, (_)
+//                           |___/
+//
+// This file contains your WiFi password!
+// Make sure to treat it accordingly
+
+
+// WiFi access point SSID (name)
+#define WIFI_SSID ""
+
+// WiFi access point password
+#define WIFI_PASSWORD ""
+
+// Amount of clients to ping
+#define CLIENTS_AMOUNT 1
+
+// Map of client IP to LED GPIO pin (not the digital pin on the board's silkscreen!)
+PingClient clients[CLIENTS_AMOUNT] = {
+  {IPAddress(192, 168, 178, 1), 5}, // GPIO 5 == D1
+};
+
+// Interval in milliseconds between sending pings (default = 5 min)
+#define UPDATE_INTERVAL 1000 * 60 * 5
+
+// Set to true if the LED pins should be active low
+#define ACTIVE_LOW true
+
+// Whether the status LED should be enabled
+#define STATUS_LED_ENABLED true
+
+// Set to a GPIO pin if you want an external status LED (WiFi connection indicator)
+#define STATUS_LED_PIN BUILTIN_LED
+
+// Whether the serial monitor should be enabled
+#define SERIAL_ENABLED true
+
+// BAUD rate of the serial monitor
+#define SERIAL_BAUD 115200
