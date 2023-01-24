@@ -25,9 +25,9 @@ void setup() {
     Serial.println("PingStatus by Sv443 (https://github.com/Sv443)");
     Serial.println();
 
-    #if UPDATE_INTERVAL < 30000
+    #if PING_INTERVAL < 30000
       Serial.println("!!");
-      Serial.println("!! Warning: Setting UPDATE_INTERVAL below ~30s might lead to erratic behavior");
+      Serial.println("!! Warning: Setting PING_INTERVAL below ~30s might cause erratic or delayed behavior if the network and processing latency is too high");
       Serial.println("!!");
     #endif
   #endif
@@ -113,7 +113,7 @@ void loop() {
     updateLedState(pin, pingRes);
   }
 
-  delay(UPDATE_INTERVAL);
+  delay(PING_INTERVAL);
 }
 
 /** Updates the LED at `pin` to be `enabled` or not, using the optional brightness and dim values set in config.h */
@@ -130,9 +130,11 @@ void updateLedState(int pin, bool enabled) {
       Serial.println(tm.tm_sec);
     #endif
 
-    // TODO:FIXME: completely wrong lol
-    bool bright = tm.tm_hour >= LED_BRIGHT_HOUR && tm.tm_min >= LED_BRIGHT_MIN
-      && tm.tm_hour < LED_DIM_HOUR && tm.tm_min < LED_DIM_MIN;
+    uint16 brightThresholdMins = LED_BRIGHT_HOUR * 60 + LED_BRIGHT_MIN;
+    uint16 dimThresholdMins = LED_DIM_HOUR * 60 + LED_DIM_MIN;
+
+    bool bright = tm.tm_hour * 60 + tm.tm_min >= brightThresholdMins
+      && tm.tm_hour * 60 + tm.tm_min < dimThresholdMins;
 
     if(bright) {
       #if SERIAL_ENABLED
