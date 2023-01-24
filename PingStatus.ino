@@ -121,14 +121,45 @@ void updateLedState(int pin, bool enabled) {
   #if AUTO_DIMMING_ENABLED
     updateTime();
 
+    #if SERIAL_ENABLED
+      Serial.print("Current time: ");
+      Serial.print(tm.tm_hour);
+      Serial.print(":");
+      Serial.print(tm.tm_min);
+      Serial.print(":");
+      Serial.println(tm.tm_sec);
+    #endif
+
+    // TODO:FIXME: completely wrong lol
     bool bright = tm.tm_hour >= LED_BRIGHT_HOUR && tm.tm_min >= LED_BRIGHT_MIN
       && tm.tm_hour < LED_DIM_HOUR && tm.tm_min < LED_DIM_MIN;
 
-    if(bright)
-      analogWrite(pin, floor(LED_BRIGHT_VALUE * 1024));
-    else
-      analogWrite(pin, floor(LED_DIM_VALUE * 1024));
+    if(bright) {
+      #if SERIAL_ENABLED
+        Serial.print("Setting LED at pin ");
+        Serial.print(pin);
+        Serial.println(" to enabled (bright)");
+      #endif
+      int val = enabled ? floor(LED_BRIGHT_VALUE * 1024) : 0;
+      analogWrite(pin, val);
+    }
+    else {
+      #if SERIAL_ENABLED
+        Serial.print("Setting LED at pin ");
+        Serial.print(pin);
+        Serial.println(" to enabled (dim)");
+      #endif
+      int val = enabled ? floor(LED_DIM_VALUE * 1024) : 0;
+      Serial.println(val);
+      analogWrite(pin, val);
+    }
   #else
     digitalWrite(pin, enabled);
+    #if SERIAL_ENABLED
+      Serial.print("Setting LED at pin ");
+      Serial.print(pin);
+      Serial.print(" to ");
+      Serial.println(enabled ? "enabled" : "disabled");
+    #endif
   #endif
 }
