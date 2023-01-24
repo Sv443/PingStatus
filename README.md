@@ -1,6 +1,7 @@
 ## PingStatus
 This is a small IoT device that pings a set of IP addresses and lights up LEDs depending on their status.  
-It can be used to check if a service or website is reachable, or if a device has entered or left the local network.
+It can be used to check if a service or website is reachable, or if a device has entered or left the local network.  
+The LEDs are automatically dimmed (or disabled) at night to reduce light pollution.
 
 <br>
 
@@ -15,7 +16,7 @@ It can be used to check if a service or website is reachable, or if a device has
 
 Per observed client:
 - LED
-- 100 Ω - 10 kΩ resistor (depends on how big the forward voltage of your LED is and how bright you want it; more resistance = dimmer)
+- ~150 Ω resistor (depends on the forward voltage of the LED)
 
 <br>
 

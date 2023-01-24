@@ -2,14 +2,22 @@
   #include "Arduino.h"
 #endif
 
-#include "types.h"
 #include "config.h"
+#include "types.h"
 
 // https://github.com/dancol90/ESP8266Ping
 #include <ESP8266Ping.h>
 
-void setup()
-{
+#include <time.h>
+#include <TZ.h>
+
+
+/** Raw time object */
+time_t now;
+/** More convenient time wrapper */
+tm tm;
+
+void setup() {
   #if SERIAL_ENABLED
     Serial.begin(SERIAL_BAUD);
 
@@ -24,10 +32,16 @@ void setup()
     #endif
   #endif
 
+  #if AUTO_DIMMING_ENABLED
+    configTime(TIME_ZONE, NTP_SERVER);
+  #endif
+
+  WiFi.persistent(false);
+  WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   #if SERIAL_ENABLED
-    Serial.print("Connecting to the WiFi AP");
+    Serial.print("WiFi connecting");
   #endif
 
   #if STATUS_LED_ENABLED
@@ -35,8 +49,7 @@ void setup()
   #endif
   int ledState = ACTIVE_LOW ? HIGH : LOW;
 
-  while (WiFi.status() != WL_CONNECTED)
-  {
+  while(WiFi.status() != WL_CONNECTED) {
     #if SERIAL_ENABLED
       Serial.print(".");
     #endif
@@ -59,8 +72,13 @@ void setup()
     pinMode(clients[i].pin, OUTPUT);
 }
 
-void loop()
-{
+/** Updates the globals `now` and `tm` with the current time */
+void updateTime() {
+  time(&now);
+  localtime_r(&now, &tm);
+}
+
+void loop() {
   for(int i = 0; i < CLIENTS_AMOUNT; i++) {
     IPAddress ip = clients[i].ip;
     int pin = clients[i].pin;
@@ -75,13 +93,14 @@ void loop()
     Serial.println(")");
   #endif
 
-    if(Ping.ping(ip)) {
+    bool pingRes = Ping.ping(ip);
+
+    if(pingRes) {
       #if SERIAL_ENABLED
         Serial.print("  > Client #");
         Serial.print(i + 1);
         Serial.println(" is available");
       #endif
-      digitalWrite(pin, ACTIVE_LOW ? LOW : HIGH);
     }
     else {
       #if SERIAL_ENABLED
@@ -89,9 +108,27 @@ void loop()
         Serial.print(i + 1);
         Serial.println(" is not available");
       #endif
-      digitalWrite(pin, ACTIVE_LOW ? HIGH : LOW);
     }
+
+    updateLedState(pin, pingRes);
   }
 
   delay(UPDATE_INTERVAL);
+}
+
+/** Updates the LED at `pin` to be `enabled` or not, using the optional brightness and dim values set in config.h */
+void updateLedState(int pin, bool enabled) {
+  #if AUTO_DIMMING_ENABLED
+    updateTime();
+
+    bool bright = tm.tm_hour >= LED_BRIGHT_HOUR && tm.tm_min >= LED_BRIGHT_MIN
+      && tm.tm_hour < LED_DIM_HOUR && tm.tm_min < LED_DIM_MIN;
+
+    if(bright)
+      analogWrite(pin, floor(LED_BRIGHT_VALUE * 1024));
+    else
+      analogWrite(pin, floor(LED_DIM_VALUE * 1024));
+  #else
+    digitalWrite(pin, enabled);
+  #endif
 }
