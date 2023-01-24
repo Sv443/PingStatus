@@ -136,21 +136,17 @@ void updateLedState(int pin, bool enabled) {
     bool bright = tm.tm_hour * 60 + tm.tm_min >= brightThresholdMins
       && tm.tm_hour * 60 + tm.tm_min < dimThresholdMins;
 
+    #if SERIAL_ENABLED
+      Serial.print("Setting LED at pin ");
+      Serial.print(pin);
+      Serial.print(" to enabled ");
+      Serial.println(bright ? "(bright)" : "(dim)");
+    #endif
     if(bright) {
-      #if SERIAL_ENABLED
-        Serial.print("Setting LED at pin ");
-        Serial.print(pin);
-        Serial.println(" to enabled (bright)");
-      #endif
       int val = enabled ? floor(LED_BRIGHT_VALUE * 1024) : 0;
       analogWrite(pin, val);
     }
     else {
-      #if SERIAL_ENABLED
-        Serial.print("Setting LED at pin ");
-        Serial.print(pin);
-        Serial.println(" to enabled (dim)");
-      #endif
       int val = enabled ? floor(LED_DIM_VALUE * 1024) : 0;
       Serial.println(val);
       analogWrite(pin, val);
