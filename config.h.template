@@ -42,7 +42,7 @@
 #define CLIENTS_AMOUNT 1
 
 // Enter all client IP addresses you'd like to observe and the GPIO pin of their LED
-//   Note: The GPIO and digital pinouts are different! Check your datasheet to see which is which
+//   Note: The GPIO and digital pinouts are different! Check your board's pinout diagram to see which is which
 //   If you want to make use of the auto-dimming, make sure the pins support PWM (squiggly line on your board's diagram)
 //   If some of the pins don't support PWM, make sure to set AUTO_DIMMING_ENABLED to false
 //   After changing this, please adjust CLIENTS_AMOUNT above

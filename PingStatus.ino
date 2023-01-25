@@ -130,17 +130,14 @@ void updateLedState(int pin, bool enabled) {
       Serial.println(tm.tm_sec);
     #endif
 
-    uint16 ledsOnThreshold = LED_ON_HOUR * 60 + LED_ON_MIN;
-    uint16 ledsOffThreshold = LED_OFF_HOUR * 60 + LED_OFF_MIN;
+    // TODO:
+    // 1. read LDR analog value
+    // 2. offset / multiply by value from config.h
+    // 3. clamp between 0 and 10 to reduce resolution and "jitter"
+    // 4. set LED brightness
 
-    uint16 brightThresholdMins = LED_BRIGHT_HOUR * 60 + LED_BRIGHT_MIN;
-    uint16 dimThresholdMins = LED_DIM_HOUR * 60 + LED_DIM_MIN;
-
-    bool ledsOn = tm.tm_hour * 60 + tm.tm_min >= ledsOnThreshold
-      && tm.tm_hour * 60 + tm.tm_min < ledsOffThreshold;
-
-    bool bright = tm.tm_hour * 60 + tm.tm_min >= brightThresholdMins
-      && tm.tm_hour * 60 + tm.tm_min < dimThresholdMins;
+    bool ledsOn = betweenThreshold(ledsOnThreshold, ledsOffThreshold);
+    bool bright = true; // TODO
 
     if(!ledsOn) {
       analogWrite(pin, 0);
@@ -190,4 +187,10 @@ void updateLedState(int pin, bool enabled) {
       #endif
     }
   #endif
+}
+
+/** Checks if the global `tm` is between the `min` and `max` thresholds in minutes */
+bool timeBetweenThreshold(uint16 min, uint16 max) {
+  return tm.tm_hour * 60 + tm.tm_min >= min
+    && tm.tm_hour * 60 + tm.tm_min < max;
 }
