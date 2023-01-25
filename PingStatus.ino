@@ -84,7 +84,7 @@ void loop() {
     int pin = clients[i].pin;
 
   #if SERIAL_ENABLED
-    Serial.print("Pinging client #");
+    Serial.print("\nPinging client #");
     Serial.print(i + 1);
     Serial.print(" (IP: ");
     Serial.print(ip);
@@ -99,14 +99,14 @@ void loop() {
       #if SERIAL_ENABLED
         Serial.print("  > Client #");
         Serial.print(i + 1);
-        Serial.println(" is available");
+        Serial.println(" is available\n");
       #endif
     }
     else {
       #if SERIAL_ENABLED
         Serial.print("  > Client #");
         Serial.print(i + 1);
-        Serial.println(" is not available");
+        Serial.println(" is not available\n");
       #endif
     }
 
@@ -130,17 +130,35 @@ void updateLedState(int pin, bool enabled) {
       Serial.println(tm.tm_sec);
     #endif
 
+    uint16 ledsOnThreshold = LED_ON_HOUR * 60 + LED_ON_MIN;
+    uint16 ledsOffThreshold = LED_OFF_HOUR * 60 + LED_OFF_MIN;
+
     uint16 brightThresholdMins = LED_BRIGHT_HOUR * 60 + LED_BRIGHT_MIN;
     uint16 dimThresholdMins = LED_DIM_HOUR * 60 + LED_DIM_MIN;
+
+    bool ledsOn = tm.tm_hour * 60 + tm.tm_min >= ledsOnThreshold
+      && tm.tm_hour * 60 + tm.tm_min < ledsOffThreshold;
 
     bool bright = tm.tm_hour * 60 + tm.tm_min >= brightThresholdMins
       && tm.tm_hour * 60 + tm.tm_min < dimThresholdMins;
 
-    #if SERIAL_ENABLED
+    if(!ledsOn) {
+      analogWrite(pin, 0);
+
+      #if SERIAL_ENABLED && SERIAL_DEBUG
+        Serial.print("Setting LED at pin ");
+        Serial.print(pin);
+        Serial.println(" to disabled (off period)");
+      #endif
+
+      return;
+    }
+
+    #if SERIAL_ENABLED && SERIAL_DEBUG
       Serial.print("Setting LED at pin ");
       Serial.print(pin);
       Serial.print(" to enabled ");
-      Serial.println(bright ? "(bright)" : "(dim)");
+      Serial.println(bright ? "(on & bright period)" : "(on & dim period)");
     #endif
     if(bright) {
       int val = enabled ? floor(LED_BRIGHT_VALUE * 1024) : 0;
@@ -152,12 +170,24 @@ void updateLedState(int pin, bool enabled) {
       analogWrite(pin, val);
     }
   #else
-    digitalWrite(pin, enabled);
-    #if SERIAL_ENABLED
-      Serial.print("Setting LED at pin ");
-      Serial.print(pin);
-      Serial.print(" to ");
-      Serial.println(enabled ? "enabled" : "disabled");
-    #endif
+    Serial.print("Setting LED at pin ");
+    Serial.print(pin);
+    Serial.print(" to ");
+
+    if(!ledsOn) {
+      digitalWrite(pin, LOW);
+
+      #if SERIAL_ENABLED && SERIAL_DEBUG
+        Serial.println("disabled (off period)");
+      #endif
+    }
+    else {
+      digitalWrite(pin, enabled);
+
+      #if SERIAL_ENABLED && SERIAL_DEBUG
+        Serial.print(enabled ? "enabled" : "disabled");
+        Serial.println(" (on period)");
+      #endif
+    }
   #endif
 }

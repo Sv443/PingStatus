@@ -12,6 +12,16 @@
 // Make sure to treat it accordingly!
 
 
+/*****************************/
+/*           Time            */
+/*****************************/
+
+// Your time zone - possible values: https://github.com/esp8266/Arduino/blob/master/cores/esp8266/TZ.h
+#define TIME_ZONE TZ_Etc_UTC          // UTC
+//#define TIME_ZONE TZ_Europe_Berlin  // Europe, Berlin
+//#define TIME_ZONE TZ_Etc_GMTp1      // GMT+1
+//#define TIME_ZONE TZ_Etc_GMTm3      // GMT-3
+
 
 /*****************************/
 /*           WiFi            */
@@ -53,17 +63,14 @@ PingClient clients[CLIENTS_AMOUNT] = {
 //   Requires all LEDs to be hooked up to PWM pins (squiggly line on your board's diagram)
 #define AUTO_DIMMING_ENABLED true
 
-// Your time zone - possible values: https://github.com/esp8266/Arduino/blob/master/cores/esp8266/TZ.h
-#define TIME_ZONE TZ_Etc_UTC          // UTC
-//#define TIME_ZONE TZ_Europe_Berlin  // Europe, Berlin
-//#define TIME_ZONE TZ_Etc_GMTp1      // GMT+1
-//#define TIME_ZONE TZ_Etc_GMTm3      // GMT-3
-
-// The time after which the status LEDs should be bright, starting from midnight (24 hours)
-#define LED_BRIGHT_HOUR 7
+// The time after which the status LEDs should be bright (starting from midnight) (24 hours)
+//   NOTE: This needs to be *after* LED_ON_HOUR and LED_ON_MIN
+#define LED_BRIGHT_HOUR 8
 #define LED_BRIGHT_MIN  0
-// The time after which the status LEDs should be dimmed, up until midnight (24 hours)
-#define LED_DIM_HOUR 18
+
+// The time after which the status LEDs should be dimmed (up until midnight) (24 hours)
+//   NOTE: This needs to be *before* LED_OFF_HOUR and LED_OFF_MIN
+#define LED_DIM_HOUR 19
 #define LED_DIM_MIN  0
 
 // The brightness of the LEDs when they're in the "bright" time - has to be a value between 0.0 and 1.0
@@ -71,6 +78,21 @@ PingClient clients[CLIENTS_AMOUNT] = {
 // The brightness of the LEDs when they're in the "dimmed" time - has to be a value between 0.0 and 1.0
 //  Set to 0 to disable the LEDs at night
 #define LED_DIM_VALUE    0.025
+
+
+// If this is enabled, the LEDs will be turned off according to the settings below
+#define LED_OFF_ENABLED true
+
+// When to turn the LEDs on (24 hours)
+//   NOTE: This needs to be *before* LED_BRIGHT_HOUR and LED_BRIGHT_MIN
+#define LED_ON_HOUR 6
+#define LED_ON_MIN  0
+
+// When to turn the LEDs off (24 hours)
+//   NOTE: This needs to be *after* LED_DIM_HOUR and LED_DIM_MIN
+#define LED_OFF_HOUR 24
+#define LED_OFF_MIN  0
+
 
 // NTP server pool URL
 #define NTP_SERVER "pool.ntp.org"           // Default (uses the closest NTP server)
@@ -96,3 +118,6 @@ PingClient clients[CLIENTS_AMOUNT] = {
 
 // BAUD rate of the serial monitor
 #define SERIAL_BAUD 115200
+
+// Enable to get more debug output in the serial monitor
+#define SERIAL_DEBUG true
