@@ -32,26 +32,39 @@ It can be used to check if a service or website is reachable, or if a device has
 
 ---
 
-<br>
+<br><br>
 
 ## Parts list:
-- ESP board (ESP-8266 for example)  
-  - Note: it needs to have at least 1 analog pin and 1 digital pin per observed client, plus 1 for the optional button
-- Light Dependent Resistor (LDR)  
-  - Wavelength: optimally around 480-540 nm - Resistance: doesn't really matter as a multiplier can be configured
-  - This part and the pull-down resistor can be skipped if you disable auto dimming in the config
-- 10 kΩ resistor (pull-down for LDR)
-- Momentary push button or limit switch (normally open)
-    - This part can also be skipped if you don't want to be able to temporarily disable the auto-shutoff mode
-- Pre-perforated circuit board and a few wires for bridging
-- Micro USB cable and USB power supply
-
-Per observed client:
-- LED
-- ~150 Ω resistor  
-  - Actual value depends on the forward voltage of the LED but 150 Ω *should* fit most
+### Required parts:
+> - ESP board (ESP-8266 for example)
+>     - Note: it needs to have at least 1 analog pin and 1 digital pin per observed client, plus 1 for the optional push button
+> - Pre-perforated circuit board and a few wires for bridging
+> - Micro USB cable and USB power supply
 
 <br>
+
+### Parts needed per observed client:
+> - LED of any color
+> - ~150 Ω resistor
+>     - Value depends on the forward voltage of the LED but 150 Ω *should* fit most
+
+<br>
+
+### Optional parts:
+> - Light Dependent Resistor / Photoresistor (LDR)
+>     - Wavelength: optimally around 480-540 nm - Resistance: doesn't really matter as a multiplier can be configured
+> - 10 kΩ pull-down resistor for LDR  
+>   
+> These parts can be skipped if you disable auto dimming in the config  
+
+<br>
+
+> - Momentary push button or limit switch (normally open)
+> - 10 kΩ pull-down resistor for push button  
+>   
+> These parts can also be skipped if you don't want to be able to temporarily disable the auto-shutoff mode
+
+<br><br>
 
 ## Setup:
 1. Install the [Arduino IDE](https://www.arduino.cc/en/software)
@@ -67,7 +80,7 @@ Per observed client:
 11. Hit the upload button
 12. Open the serial monitor with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>M</kbd> to verify if it works
 
-<br>
+<br><br>
 
 ## Build:
 ### Build Guide:
@@ -83,7 +96,7 @@ just connect the thingies to the thingies lol
 ### Enclosure 3D Model:
 [Model coming soon]
 
-<br>
+<br><br><br>
 
 <div align="center" style="text-align:center;">
 
