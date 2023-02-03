@@ -1,6 +1,7 @@
-# PingStatus
+# PingStatus [WIP]
 This is a small IoT device that pings a set of IP addresses and lights up LEDs depending on their status.  
-It can be used to check if a service or website is reachable, or if a device has entered or left the local network.
+It can be used to check if a service or website is reachable, or if a device has entered or left the local network.  
+The firmware is still unstable and might not work at times. Please check back later for an updated version.
 
 <br>
 
