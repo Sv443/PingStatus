@@ -68,17 +68,20 @@ It can be used to check if a service or website is reachable, or if a device has
 
 ## Setup:
 1. Install the [Arduino IDE](https://www.arduino.cc/en/software)
-2. Add your ESP board's URL in the IDE preferences [(guide)](https://arduino-esp8266.readthedocs.io/en/latest/installing.html)
+2. Add your ESP board's URL in the IDE preferences by following [this guide](https://arduino-esp8266.readthedocs.io/en/latest/installing.html)
 3. Install your ESP board's firmware in the board manager
-4. Install the ESP8266Ping library by [downloading it here](https://github.com/dancol90/ESP8266Ping/archive/refs/heads/master.zip) and extracting it to `<Arduino folder>/libraries`
-5. Download PingStatus' repository by [clicking here](https://github.com/Sv443/PingStatus/archive/refs/heads/master.zip) and extract it somewhere
+4. Install the following libraries by downloading them and extracting them to `<Arduino folder>/libraries` (usually under "Documents"):
+    - [ESP8266Ping](https://github.com/dancol90/ESP8266Ping/archive/refs/heads/master.zip)
+    - [ArduinoJson](https://github.com/bblanchon/ArduinoJson/archive/refs/heads/master.zip)
+5. [Download the PingStatus repository](https://github.com/Sv443/PingStatus/archive/refs/heads/master.zip) and extract it somewhere
 6. Rename the file `config.h.template` to `config.h`
 7. Edit `config.h` to provide your WiFi settings and configure everything else to your needs
 8. Open the .ino file with the Arduino IDE
 9. Connect your ESP board to your computer via USB and wait for the drivers to be installed and ready
 10. Match up the board settings under `Tools` with your ESP board and select the right COM or ttyUSB port
 11. Hit the upload button
-12. Open the serial monitor with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>M</kbd> to verify if it works
+12. Open the serial monitor with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>M</kbd> to verify that it works
+    - If the output is garbled, reset the board. If it is still unreadable, make sure the BAUD rate is set to 115200.
 
 <br><br>
 
