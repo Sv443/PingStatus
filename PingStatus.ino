@@ -5,9 +5,6 @@
 #include "config.h"
 #include "types.h"
 
-// https://github.com/dancol90/ESP8266Ping
-#include <ESP8266Ping.h>
-
 
 /** Raw time object */
 time_t now;
@@ -196,4 +193,10 @@ void updateLedState(int pin, bool enabled) {
 bool timeBetweenThreshold(uint16 min, uint16 max) {
   return tm.tm_hour * 60 + tm.tm_min >= min
     && tm.tm_hour * 60 + tm.tm_min < max;
+}
+
+/** Parses an IPv4 string to an IPAddress instance */
+IPAddress parseIP(String ip) {
+  // TODO: parse IP
+  return IPAddress(1, 2, 3, 4);
 }

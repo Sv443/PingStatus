@@ -10,7 +10,7 @@
 ## v0.2.0 (WIP)
 - Auto-dimming LEDs based on ambient light by reading an LDR
 - Added DoH support to send a GET/HEAD <!--(TODO)--> request to certain domains
-- Made configuring clients a bit easier
+- Made the client configuration done through JSON for easier editing
 - Added momentary button to temporarily disable auto-shutoff mode
 
 <br>

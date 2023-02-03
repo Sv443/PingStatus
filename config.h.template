@@ -39,20 +39,34 @@
 /*****************************/
 
 // Amount of clients that are being observed
-#define CLIENTS_AMOUNT 1
+#define CLIENTS_AMOUNT 2
 
 // Enter all client IP addresses you'd like to observe and the GPIO pin of their LED
 //   Note: The GPIO and digital pinouts are different! Check your board's pinout diagram to see which is which
 //   If you want to make use of the auto-dimming, make sure the pins support PWM (squiggly line on your board's diagram)
 //   If some of the pins don't support PWM, make sure to set AUTO_DIMMING_ENABLED to false
 //   After changing this, please adjust CLIENTS_AMOUNT above
+//
+// Format:
+//   ClientType  type               // Can be ClientType.IP or ClientType.URL
+//   String      ipOrUrl            // IP address or URL
+//   int         pin                // GPIO pin of the LED
+//   int         ldrValueBounds[2]  // Lower and upper bounds of the LDR's value (can be between 0 and 1023) (only used if AUTO_DIMMING_ENABLED is true)
+//   bool        activeLow          // If your LEDs are active low, set this to true, else false
+//
 PingClient clients[CLIENTS_AMOUNT] = {
-  { IPAddress(192, 168, 178, 1), 5 }, // GPIO 5 == D1
+  {
+    ClientType.IP,
+    "192.168.1.1",
+    5,
+    {0, 500},
+    false,
+  },
 };
 
-// Interval in milliseconds between sending pings (default = 2 min)
-//   Note: Anything under 30 seconds might cause erratic or delayed behavior if the network and processing latency is too high
-#define PING_INTERVAL 1000 * 60 * 2
+// Interval in milliseconds between sending pings (default = 10s/client)
+//   Note: Anything under (10 seconds * amount of clients) might cause erratic or delayed behavior if the network and processing latency is too high
+#define PING_INTERVAL 10000 * CLIENTS_AMOUNT
 
 
 /*****************************/
@@ -63,54 +77,42 @@ PingClient clients[CLIENTS_AMOUNT] = {
 //   Requires all LEDs to be hooked up to PWM pins (squiggly line on your board's diagram)
 #define AUTO_DIMMING_ENABLED true
 
-// The time after which the status LEDs should be bright (starting from midnight) (24 hours)
-//   NOTE: This needs to be *after* LED_ON_HOUR and LED_ON_MIN
-#define LED_BRIGHT_HOUR 8
-#define LED_BRIGHT_MIN  0
-
-// The time after which the status LEDs should be dimmed (up until midnight) (24 hours)
-//   NOTE: This needs to be *before* LED_OFF_HOUR and LED_OFF_MIN
-#define LED_DIM_HOUR 19
-#define LED_DIM_MIN  0
-
-// The brightness of the LEDs when they're in the "bright" time - has to be a value between 0.0 and 1.0
-#define LED_BRIGHT_VALUE 1.0
-// The brightness of the LEDs when they're in the "dimmed" time - has to be a value between 0.0 and 1.0
-//  Set to 0 to disable the LEDs at night
-#define LED_DIM_VALUE    0.025
+// The maximum possible brightness of the LEDs as a value between 0.0 and 1.0
+#define LED_MAX_VALUE 1.0
+// The lowest possible brightness of the LEDs as a value between 0.0 and 1.0
+#define LED_MIN_VALUE 0.025
 
 
 // If this is enabled, the LEDs will be turned off according to the settings below
 #define LED_OFF_ENABLED true
 
 // When to turn the LEDs on (24 hours)
-//   NOTE: This needs to be *before* LED_BRIGHT_HOUR and LED_BRIGHT_MIN
 #define LED_ON_HOUR 6
 #define LED_ON_MIN  0
 
 // When to turn the LEDs off (24 hours)
-//   NOTE: This needs to be *after* LED_DIM_HOUR and LED_DIM_MIN
 #define LED_OFF_HOUR 24
 #define LED_OFF_MIN  0
 
 
 // NTP server pool URL
-#define NTP_SERVER "pool.ntp.org"           // Default (uses the closest NTP server)
-//#define NTP_SERVER "europe.pool.ntp.org"  // European NTP server pool
-//#define NTP_SERVER "us.pool.ntp.org"      // US NTP server pool
+#define NTP_SERVER "de.europe.pool.ntp.org"
+//#define NTP_SERVER "pool.ntp.org"           // Default (uses the closest NTP server)
+//#define NTP_SERVER "europe.pool.ntp.org"    // European NTP server pool
+//#define NTP_SERVER "us.pool.ntp.org"        // US NTP server pool
 
 
 /*****************************/
 /*           Other           */
 /*****************************/
 
-// Set to true if the LED pins should be active low
-#define ACTIVE_LOW false
-
-// Whether the status LED should be enabled
+// Whether the status LED (WiFi connection & activity indicator) should be enabled
 #define STATUS_LED_ENABLED true
 
-// Set to a GPIO pin if you want an external status LED (WiFi connection indicator)
+// Whether the status LED is active low (true on ESP, false on Arduino)
+#define STATUS_LED_ACTIVE_LOW true
+
+// Set to a GPIO pin if you want an external status LED
 #define STATUS_LED_PIN BUILTIN_LED
 
 // Whether the serial monitor should be enabled
