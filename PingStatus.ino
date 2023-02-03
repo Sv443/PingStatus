@@ -8,9 +8,6 @@
 // https://github.com/dancol90/ESP8266Ping
 #include <ESP8266Ping.h>
 
-#include <time.h>
-#include <TZ.h>
-
 
 /** Raw time object */
 time_t now;
@@ -110,9 +107,11 @@ void loop() {
       #endif
     }
 
+    // TODO: collect LED states in a variable, then update at the end to update all at once
     updateLedState(pin, pingRes);
   }
 
+  // TODO: change to like 100ms, then calculate amount of interval with PING_INTERVAL
   delay(PING_INTERVAL);
 }
 
@@ -142,6 +141,8 @@ void updateLedState(int pin, bool enabled) {
     if(!ledsOn) {
       analogWrite(pin, 0);
 
+      // TODO: status led blink sequence to notify of the LEDs turning off
+      // maybe the LEDs should blink too?
       #if SERIAL_ENABLED && SERIAL_DEBUG
         Serial.print("Setting LED at pin ");
         Serial.print(pin);
@@ -174,6 +175,8 @@ void updateLedState(int pin, bool enabled) {
     if(!ledsOn) {
       digitalWrite(pin, LOW);
 
+      // TODO: status led blink sequence to notify of the LEDs turning off
+      // maybe the LEDs should blink too?
       #if SERIAL_ENABLED && SERIAL_DEBUG
         Serial.println("disabled (off period)");
       #endif
