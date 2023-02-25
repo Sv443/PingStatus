@@ -2,8 +2,8 @@
   #include "Arduino.h"
 #endif
 
-#include "config.h"
-#include "types.h"
+#include "config.hpp"
+#include "types.hpp"
 
 
 /** Raw time object */
