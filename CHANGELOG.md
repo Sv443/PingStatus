@@ -1,20 +1,19 @@
 ## Roadmap
-- Support photoresistor as a trigger for auto-dimming
-    - calculate the PWM value from the photoresistor so it changes brightness dynamically
-- Add support for pinging domains by looking up the IP via DoH [see this](https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/)
-    - example: `curl -H 'accept: application/dns-json' 'https://cloudflare-dns.com/dns-query?name=example.com&type=A'`
-- Add a comprehensible way to configure config settings like active low and on/off time per client
+- Add support for GET/HEAD requests
+- Option to run a webhook when a client goes down (and back up)
+- Option to accumulate multiple clients' ping results into a single LED
 
 <br>
 
 ## v0.2.0 (WIP)
-- Auto-dimming LEDs based on ambient light by reading an LDR
-- Added DoH support to send a GET/HEAD <!--(TODO)--> request to certain domains
-- Made the client configuration done through JSON for easier editing
-- Added momentary button to temporarily disable auto-shutoff mode
+- LEDs are now auto-dimmed based on amount of ambient light by reading an LDR
+- Added DNS resolution support to send a ping request to the IP behind a provided domain
+- Added optional push button to manually refresh the clients or temporarily disable the night mode
+- Changed client configuration to a JSON string for easier modification and more flexibility
 
 <br>
 
 ## v0.1.0
 - Added basic pinging of any amount of clients
 - Added auto-dimmer function
+- Added night mode

@@ -55,6 +55,8 @@ void setup() {
   // TODO: set pin modes
   // for (int i = 0; i < CLIENTS_AMOUNT; i++)
   //   pinMode(clients[i].pin, OUTPUT);
+
+  // TODO: attach button interrupt
 }
 
 // internal timer increments per second
