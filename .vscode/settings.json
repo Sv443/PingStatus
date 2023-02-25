@@ -8,5 +8,8 @@
         "motd": "plaintext",
         "*.h.template": "cpp",
         "*.template": "cpp"
-    }
+    },
+    "C_Cpp.intelliSenseCacheSize": 0,
+    "C_Cpp.default.intelliSenseMode": "clang-x64",
+    "C_Cpp.errorSquiggles": "disabled"
 }

@@ -3,18 +3,17 @@
         {
             "name": "Win32",
             "includePath": [
-                "${LOCALAPPDATA}\\Arduino15\\packages\\esp8266\\tools\\**",
-                "${LOCALAPPDATA}\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\**",
-                "${USERPROFILE}\\Documents\\Arduino\\libraries\\**",
-                "C:\\Program Files (x86)\\Arduino\\libraries\\**"
+                "${LOCALAPPDATA}\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.2\\tools\\sdk\\include",
+                "${LOCALAPPDATA}\\Arduino15\\packages\\esp8266\\**",
+                "${USERPROFILE}\\Documents\\Arduino\\libraries\\**"
+                // "${LOCALAPPDATA}\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\avr\\include\\**"
             ],
             "forcedInclude": [],
             "defines": [
                 "USBCON"
             ],
-            "intelliSenseMode": "msvc-x64",
-            "cStandard": "c11",
-            "cppStandard": "c++11"
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerPath": "${LOCALAPPDATA}\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7\\bin\\avr-gcc.exe"
         }
     ],
     "version": 4
