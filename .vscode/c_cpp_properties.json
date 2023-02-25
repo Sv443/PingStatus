@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${LOCALAPPDATA}\\Arduino15\\packages\\esp8266\\tools\\**",
+                "${LOCALAPPDATA}\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\**",
+                "${USERPROFILE}\\Documents\\Arduino\\libraries\\**",
+                "C:\\Program Files (x86)\\Arduino\\libraries\\**"
+            ],
+            "forcedInclude": [],
+            "defines": [
+                "USBCON"
+            ],
+            "intelliSenseMode": "msvc-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++11"
+        }
+    ],
+    "version": 4
+}
