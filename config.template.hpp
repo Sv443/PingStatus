@@ -17,9 +17,11 @@
 /*************************************/
 
 // GPIO pin of the manual refresh button (-1 to disable)
+//   Can be any digital pin
 #define PIN_BUTTON -1
 
 // GPIO pin of the light dependent resistor (LDR)
+//   This has to be an analog pin!
 #define PIN_LDR -1
 
 
@@ -93,7 +95,7 @@ String clients = R"([
 //   LogLevel.Debug   - Prints pretty much everything
 //   LogLevel.Info    - Prints only the most important info (default option)
 //   LogLevel.Warning - Only prints warnings and errors
-#define SERIAL_LOG_LEVEL LogLevel.Debug
+#define SERIAL_LOG_LEVEL LogLevel.Info
 
 
 /*************************************/
@@ -101,7 +103,6 @@ String clients = R"([
 /*************************************/
 
 // If this is enabled, the LEDs will be turned off at night according to the settings below
-//   The time is in the time zone you defined with TIME_ZONE
 #define NIGHT_MODE_ENABLED true
 
 // Define the lower and upper boundary of the LDR (aka what values are considered the darkest and lightest)
@@ -110,13 +111,13 @@ String clients = R"([
 #define LDR_MIN_VAL 0
 #define LDR_MAX_VAL 500
 
-// When to turn the LEDs on (24 hour format)
-#define NM_ON_HOUR 6
-#define NM_ON_MIN  0
-
-// When to turn the LEDs off (24 hour format)
+// When to turn the LEDs off (24 hour format, local time)
 #define NM_OFF_HOUR 23
 #define NM_OFF_MIN  0
+
+// When to turn the LEDs back on again (24 hour format, local time)
+#define NM_ON_HOUR 6
+#define NM_ON_MIN  0
 
 
 /*************************************/
