@@ -60,24 +60,44 @@
 // Timeout in milliseconds between refreshing the status of every client (default = 1 minute)
 #define REFRESH_TIMEOUT 1000 * 60
 
-// The clients to ping
-//   TODO: explain JSON structure
-String clients = R"([
-  {
-    "name": "my cool phone",
-    "ip": "192.168.420.69",
-    "pin": 5,
-    "ldrMultiplier": 1.0,
-    "activeLow": false,
-  },
-  {
-    "name": "my cool website",
-    "domain": "www.sv443.net",
-    "pin": 14,
-    "ldrMultiplier": 0.5,
-    "activeLow": false,
-  }
-])";
+// Internal buffer size of the clients string below (in bytes)
+//   If you have lots of clients, you need to adjust this value so that there's enough room in memory to decode the clients string
+//   To find out the optimal value, go to this site: https://arduinojson.org/v6/assistant
+//   Select your board, choose "Deserialize" as the mode and "char*" as input type, then in the next step paste the object from below
+//   Take the "Total (recommended)" value and round it up if you like to leave an extra buffer for future modifications
+#define JSON_BUFFER_SIZE 512
+
+// A JSON array of the clients you want to ping, which LED pins to light up and other configuration
+//   The following table explains the JSON structure of a single client object
+//   You may add as many client objects as you have GPIO pins with LEDs
+//   - Note: You must adjust the JSON_BUFFER_SIZE above if you have lots of clients
+//   - If you don't know JSON, check out this guide: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON
+//   - The example value below has a size of 192 bytes TODO: ensure this is correct
+//
+//   | property      | type   |required?| default | description
+//   |---------------|--------|---------|---------|-------------------------------------------------------
+//   | name          | String | yes     |         | Name of the client (only used in the serial monitor)
+//   | ip OR domain  | String | yes     |         | IP address or fully qualified domain name (e.g. "192.168.1.1" or "www.example.org")
+//   | pin           | int    | yes     |         | Number of the GPIO pin to which an LED is connected
+//   | activeLow     | bool   | no      | false   | Whether the LED is active low
+//   | ldrMultiplier | float  | no      | 1.0     | Can be used to fine tune the brightness of the LED (2.0 is double, 0.5 is half)
+//
+// String clients = R"([
+//   {
+//     "name": "my cool phone",
+//     "ip": "192.168.420.69",
+//     "pin": 5,
+//     "ldrMultiplier": 1.0,
+//     "activeLow": false,
+//   },
+//   {
+//     "name": "my cool website",
+//     "domain": "www.sv443.net",
+//     "pin": 14,
+//     "ldrMultiplier": 0.5,
+//     "activeLow": false,
+//   }
+// ])";
 
 
 /*************************************/
@@ -92,10 +112,10 @@ String clients = R"([
 
 // This defines the amount of log messages you'll receive in the serial monitor
 //   Possible values:
-//   LogLevel.Debug   - Prints pretty much everything
-//   LogLevel.Info    - Prints only the most important info (default option)
-//   LogLevel.Warning - Only prints warnings and errors
-#define SERIAL_LOG_LEVEL LogLevel.Info
+//   0 - Prints pretty much everything
+//   1 - Prints only the most important info (default option)
+//   2 - Only prints errors
+#define SERIAL_LOG_LEVEL 1
 
 
 /*************************************/
@@ -107,7 +127,7 @@ String clients = R"([
 
 // Define the lower and upper boundary of the LDR (aka what values are considered the darkest and lightest)
 //   The value has to be between 0 and 1023
-//   If your SERIAL_LOG_LEVEL is set to LogLevel.Debug the serial monitor will print out the LDR's current value
+//   If your SERIAL_LOG_LEVEL is set to 0 or 1, the serial monitor will print out the LDR's current value
 #define LDR_MIN_VAL 0
 #define LDR_MAX_VAL 500
 

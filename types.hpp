@@ -1,8 +1,10 @@
-#pragma once
+#ifndef _TYPES_HPP
+#define _TYPES_HPP
 
 #ifndef String
   #include <Arduino.h>
 #endif
+#include <vector>
 
 #include <ESP8266WiFi.h>
 #include <time.h>
@@ -14,22 +16,13 @@
 #include <ArduinoJson.h>
 #include <ArduinoJson.hpp>
 
-enum LogLevel {
-  Debug = 0,
-  Info,
-  Error
-};
-
-enum ClientType {
-  IP = 0,
-  URL
-};
-
 struct PingClient {
-  ClientType type;
-  String ipOrUrl;
+  String name;
+  IPAddress ip;
   int pin;
-  float brightnessMultiplier;
-  int ledValueBounds[2];
   bool activeLow;
+  float ldrMultiplier;
 };
+
+
+#endif
